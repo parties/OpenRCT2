@@ -72,6 +72,7 @@ struct ResearchItem
     bool Exists() const;
     bool IsAlwaysResearched() const;
     StringId GetName() const;
+    std::string GetStringName() const;
     StringId GetCategoryInventionString() const;
     StringId GetCategoryName() const;
 
@@ -154,7 +155,8 @@ void ResearchFix();
 void ResearchItemsMakeAllUnresearched();
 void ResearchItemsMakeAllResearched();
 void ResearchItemsShuffle();
-/**
+void ResearchItemsSortByName();
+    /**
  * Determines if a newly invented ride entry should be listed as a new ride
  * or as a new vehicle for a pre-existing ride.
  */

@@ -23,6 +23,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../localisation/LocalisationService.h"
 #include "../object/ObjectEntryManager.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
@@ -38,6 +39,7 @@
 #include "../world/Scenery.h"
 #include "Finance.h"
 #include "NewsItem.h"
+#include <openrct2/Context.h>
 
 #include <algorithm>
 #include <iterator>
@@ -730,6 +732,13 @@ StringId ResearchItem::GetName() const
     return sceneryEntry->name;
 }
 
+std::string ResearchItem::GetStringName() const
+{
+    const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+
+    return ls.GetString(GetName());
+}
+
 /**
  *
  *  rct2: 0x00685A79
@@ -931,6 +940,17 @@ void ResearchItemsShuffle()
     std::shuffle(
         std::begin(gameState.ResearchItemsUninvented), std::end(gameState.ResearchItemsUninvented),
         std::default_random_engine{});
+}
+
+bool SortByName(ResearchItem a, ResearchItem b)
+{
+    return a.GetStringName() < b.GetStringName();
+}
+
+void ResearchItemsSortByName()
+{
+    auto& gameState = GetGameState();
+    std::sort(std::begin(gameState.ResearchItemsUninvented), std::end(gameState.ResearchItemsUninvented), SortByName);
 }
 
 bool ResearchItem::IsAlwaysResearched() const

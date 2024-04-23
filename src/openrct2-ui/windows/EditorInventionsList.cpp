@@ -182,7 +182,7 @@ static Widget _inventionListDragWidgets[] = {
                     Close();
                     break;
                 case WIDX_RANDOM_SHUFFLE:
-                    ResearchItemsShuffle();
+                    ResearchItemsSortByName();
                     Invalidate();
                     break;
                 case WIDX_MOVE_ITEMS_TO_TOP:
@@ -270,6 +270,13 @@ static Widget _inventionListDragWidgets[] = {
             WindowEditorInventionsListDragOpen(researchItem, windowPos, widgets[WIDX_PRE_RESEARCHED_SCROLL].right);
         }
 
+        static bool VisibleListSortRideName(const ResearchItem& a, const ResearchItem& b)
+        {
+            auto nameA = a.GetStringName();
+            auto nameB = b.GetStringName();
+            return nameA < nameB;
+        }
+
         void OnScrollDraw(int32_t scrollIndex, DrawPixelInfo& dpi) override
         {
             const auto& gameState = GetGameState();
@@ -283,6 +290,10 @@ static Widget _inventionListDragWidgets[] = {
             auto* dragItem = WindowEditorInventionsListDragGetItem();
 
             const auto& researchList = scrollIndex == 0 ? gameState.ResearchItemsInvented : gameState.ResearchItemsUninvented;
+
+            // sort list
+            //std::sort(researchList.begin(), researchList.end(), VisibleListSortRideName);
+
             for (const auto& researchItem : researchList)
             {
                 itemY += SCROLLABLE_ROW_HEIGHT;

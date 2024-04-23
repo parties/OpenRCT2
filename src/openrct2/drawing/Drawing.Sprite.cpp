@@ -314,7 +314,7 @@ bool GfxLoadG2()
         if (!gOpenRCT2Headless)
         {
             auto uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Unable to load g2.dat");
+            uiContext->ShowMessageBox("Unable to load g2.dat; path: " + path);
         }
     }
     return false;
